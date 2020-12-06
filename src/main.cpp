@@ -4,18 +4,11 @@ Serial pc(USBTX, USBRX, 9600);
 PwmOut light (p9);
 
 volatile char c = '\0';
-
-void onCharReceived() {
-c = pc.getc();
-}
-
 float i = 0.5;
 
-int main() {
-    lights = i;
-    pc.attach(&onCharReceived); 
-    while (1) {
-        if (c != '\0') {
+void onCharReceived() {
+
+    c = pc.getc();
             switch(c) {
                 case '+' :
                     if(i<=0.95)) i += 0.05;
@@ -34,12 +27,16 @@ int main() {
                     pc.printf("Intensidade = %.2f \n", i);
                     break;
                 default :
-                    pc.printf("Caracter Invalido\n");
+                    pc.printf("Caracter Invalido \n");
                     break;
                 }
-            lights = i;
+            light = i;
             c = '\0'; 
-            }
-        wait_ms(50);
-        }
+}
+
+int main() {
+    light = i;
+    pc.printf("Intensidade = %.2f \n", i);
+    pc.attach(&onCharReceived); 
+    while(1){wait_ms(100)}
     }
